@@ -26,7 +26,7 @@ void CreateObejcts(Card* arr[SIZE]);
     return an array of Card pointers for those Cards whose _issuer matches the second parameter
 */
 
-void MatchingIssuerCards(Card* arr[SIZE], Issuer value, Card* res[SIZE]);
+Card **MatchingIssuerCards(Card* arr[SIZE], Issuer value, Card* res[SIZE]);
 
 /*
     return cvv of the card with highest _annual_charge

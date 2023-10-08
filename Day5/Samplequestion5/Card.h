@@ -37,10 +37,11 @@ public:
 
     int limit() const { return _limit; }
 
-    //for displaying Card attributes
     friend std::ostream &operator<<(std::ostream &os, const Card &rhs);
-};
 
+    //for displaying Card attributes
+    
+};
 
 std::string DisplayEnum(const Issuer value);
 #endif // CARD_H

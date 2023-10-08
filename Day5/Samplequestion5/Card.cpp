@@ -21,7 +21,7 @@ Card::Card(int number, int cvv, Issuer issuer, float charge, int limit)
 std::ostream &operator<<(std::ostream &os, const Card &rhs) {
     os << "_number: " << rhs._number
        << " _cvv: " << rhs._cvv
-       << " _issuer: " << DisplayEnum(rhs._issuer)
+       << " _issuer: " << DisplayEnum(rhs._issuer) 
        << " _annual_charge: " << rhs._annual_charge
        << " _limit: " << rhs._limit;
     return os;
@@ -29,5 +29,15 @@ std::ostream &operator<<(std::ostream &os, const Card &rhs) {
 
 std::string DisplayEnum(const Issuer value)
 {
-    return std::string();
+    if(value == Issuer::MASTERCARD)
+    {
+        return "MASTERCARD";
+    }
+    else if(value == Issuer::RUPAY)
+    {
+        return "RUPAY";
+    }
+    else{
+        return "VISA";
+    }
 }

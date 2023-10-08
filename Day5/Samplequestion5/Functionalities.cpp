@@ -28,10 +28,11 @@ void CreateObejcts(Card *arr[SIZE])
     arr[2] = new DebitCard(1671, 456, Issuer::VISA, 1800.56f, 50000.0f,  Category::PREMIUM);
     arr[3] = new DebitCard(1871, 222, Issuer::MASTERCARD, 7600.21f, 50000.0f,  Category::PREMIUM);
     arr[4] = new DebitCard(1111, 854, Issuer::RUPAY, 1900.21f, 50000.0f,  Category::DELUXE);
+
 }
 
 
-void MatchingIssuerCards(Card *arr[SIZE], Issuer value, Card* res[SIZE])
+Card  **MatchingIssuerCards(Card *arr[SIZE], Issuer value, Card* res[SIZE])
 {
     if(CheckAllNull(arr)) {
         throw std::runtime_error("Invalid input. No data found\n");
@@ -44,16 +45,22 @@ void MatchingIssuerCards(Card *arr[SIZE], Issuer value, Card* res[SIZE])
         if (arr[i] == nullptr){
             continue;
         }
-
         /*
             check if issuer is matching
             If yes, copy address in result at k position. update position by 1       
         */
         if (arr[i]->issuer() == value ) {
+
             res[k++] = arr[i];
         }
     }
 
+    return res;
+
+    // for(int j=0; j< sizeof(res); j++)
+    // {
+    //     std::cout<< res[j]->issuer();
+    // }
 }
 
 int HighestChargeCard(Card *arr[SIZE])
@@ -105,13 +112,13 @@ Card *PointerToMatchingNumberCard(Card *arr[SIZE], int number)
             res = arr[i];
         }
     }
-    if(res == nullptr){
-        throw NoMatchingCardException("No matching card found\n");    
-    }
+    // if(res == nullptr){
+    //     throw NoMatchingCardException("No matching card found\n");    
+    // }
 
-    else {
+    // else {
         return res;
-    }
+    //}
     
 
 }
