@@ -1,13 +1,17 @@
 #include "Functionalities.h"
+#define SIZE 5
 
-#define SIZE 3
+#include "DebitCard.h"
+#include "Card.h"
+#include "CreditCard.h"
+#include "Category.h"
+#include "NoMatchingCardException.h"
 
-//Composition code
-
-bool CheckNull(Employee *arr[SIZE])
+bool CheckAllNull(Card *arr[SIZE])
 {
     bool flag = true;
-    for(int i=0;i<3;i++) {
+
+    for(int i = 0; i < SIZE; i++ ) {
         if (arr[i] != nullptr) {
             return false;
         }
@@ -15,102 +19,99 @@ bool CheckNull(Employee *arr[SIZE])
 
     return flag;
 }
-void CreateObjects(Employee *arr1[SIZE])
+
+void CreateObejcts(Card *arr[SIZE])
 {
-    arr1[0] = new Employee(
-        "E101",
-        "Harshit",
-        566677.0f,
-        Department::DEVELOPMENT,
-        new Project("KAP",80,879980.0f)
-    );
 
-     arr1[1] = new Employee(
-        "E102",
-        "Harshit ULTRA",
-        1566677.0f,
-        Department::TESTING,
-        new Project("AUTOSAR",10,1879980.0f)
-    );
-
-     arr1[2] = new Employee(
-        "E101",
-        "Harshit ULTRA PRO MAX",
-        2566677.0f,
-        Department::INTEGERATION,
-        new Project("P-ADAS",90,2879980.0f)
-    );
+    arr[0] = new DebitCard(1111, 876, Issuer::MASTERCARD, 1800.21f, 50000.0f,  Category::PREMIUM);
+    arr[1] = new DebitCard(1451, 576, Issuer::MASTERCARD, 2800.21f, 50000.0f,  Category::SIGNATURE);
+    arr[2] = new DebitCard(1671, 456, Issuer::VISA, 1800.56f, 50000.0f,  Category::PREMIUM);
+    arr[3] = new DebitCard(1871, 222, Issuer::MASTERCARD, 7600.21f, 50000.0f,  Category::PREMIUM);
+    arr[4] = new DebitCard(1111, 854, Issuer::RUPAY, 1900.21f, 50000.0f,  Category::DELUXE);
 }
 
-Employee *EmployeeWithHighestSalary(Employee *arr1[SIZE])
+
+void MatchingIssuerCards(Card *arr[SIZE], Issuer value, Card* res[SIZE])
 {
-
-    if(CheckNull(arr1)) {
-        //data is empty!
-        throw std::runtime_error("Data is empty!");
+    if(CheckAllNull(arr)) {
+        throw std::runtime_error("Invalid input. No data found\n");
     }
-    Employee* result = arr1[0];
-    //assume first employee salary as highest
-    float max = arr1[0]->salary(); 
 
-    //take 1 variable for recording current position object's salary in loop
-    float currentSal = 0.0f;
+    int k=0;
     
-    for(int i=0; i < SIZE; i++ ) {
-        
-        //fetch current position employee's salary
-        currentSal = arr1[i]->salary();
-        
-        //if currentSal is more than max, update max and result pointers
-        if (currentSal > max ) {
-            max = currentSal;
-            result = arr1[i]; 
-        }
-    }
-
-    //return result AFTER THE WHOLE LOOP ONLY
-    return result;
-}
-
-int CountEmployeeWithGivenDepartment(Employee *arr1[SIZE], Department dept)
-{
-    if (CheckNull(arr1)) {
-        throw std::runtime_error("Data is empty");
-    }
-
-    int count = 0;
     for(int i=0; i < SIZE; i++) {
-        if (arr1[i]->dept() == dept) {
-            count++;
+
+        if (arr[i] == nullptr){
+            continue;
+        }
+
+        /*
+            check if issuer is matching
+            If yes, copy address in result at k position. update position by 1       
+        */
+        if (arr[i]->issuer() == value ) {
+            res[k++] = arr[i];
         }
     }
 
-    return count;
 }
 
-float AverageBudget(Employee *arr2[SIZE])
+int HighestChargeCard(Card *arr[SIZE])
 {
-    if(CheckNull(arr2)) {
-        //data is empty!
-        throw std::runtime_error("Data is empty!");
+    if(CheckAllNull(arr)) {
+        throw std::runtime_error("Invalid input. No data found\n");
     }
 
-    float total = 0.0f;
+    //currentMax
+    float max = arr[0]->annualCharge();
 
-    for(int i=0; i < SIZE ;i++) {
-        //access project pointer first and then access budget from it
-        total += arr2[i]->project()->budget();
+    //currentCharge
+    float currentCardCharge = 0.0f;
+
+    //pointer for result
+
+    int res = arr[0]->cvv();
+
+    for(int i = 0; i < SIZE; i++ ) {
+
+        if (arr[i] == nullptr){
+            continue;
+        }
+
+        currentCardCharge = arr[i]->annualCharge();
+        
+        if(currentCardCharge > max) {
+            max = currentCardCharge;
+            res = arr[i]->cvv();
+        }
     }
 
-    return total / 3;
+    return res;
 }
 
-void FreeMemory(Employee *arr1[SIZE])
+Card *PointerToMatchingNumberCard(Card *arr[SIZE], int number)
 {
-    //delete the inner Project pointer
-
-    for(int i=0;i<SIZE;i++) {
-        delete arr1[i]; //ensure this also deletes Project!!!!!
+    if(CheckAllNull(arr)) {
+        throw std::runtime_error("Invalid input. No data found\n");
     }
-}
+    Card* res = nullptr;
+    for(int i = 0; i < SIZE; i++ ) {
 
+        if (arr[i] == nullptr){
+            continue;
+        }
+
+        if(arr[i]->number() == number) {
+            res = arr[i];
+        }
+    }
+    if(res == nullptr){
+        throw NoMatchingCardException("No matching card found\n");    
+    }
+
+    else {
+        return res;
+    }
+    
+
+}

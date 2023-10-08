@@ -1,55 +1,42 @@
 #ifndef FUNCTIONALITIES_H
 #define FUNCTIONALITIES_H
 
-#include "Employee.h"
-#include "Project.h"
+#include "Card.h"
+#include "DebitCard.h"
+#include "CreditCard.h"
+#include "Issuer.h"
 
-#define SIZE 3
-
-/*
-    A function to check if all positions of the array are nullptr
-*/
-
-bool CheckNull(Employee* arr[SIZE]);
+#define SIZE 5
 
 /*
-    Also, create 3 objects of Employees in an array.
-    Link one Project to one Employee
-
-    Input : 1 array (one for Employees)
-    Output : void
+    A function to check if all poinnters in the container is nullptr
+    i.e if data is empty
 */
 
-void CreateObjects(  Employee* arr1[SIZE]  );
+bool CheckAllNull(Card* arr[SIZE]);
 
 /*
-    A function to return the pointer to the Employee with 
-    the highest salary
+    A function to create 3 objects of CreditCard and 2 objects of DebitCard
+
 */
 
-Employee* EmployeeWithHighestSalary(  Employee* arr1[SIZE] );
-
-
+void CreateObejcts(Card* arr[SIZE]);
 
 /*
-    A function to return the count of all Employees in the array
-    whose _dept value matches with the second parameter passed to
-    this function
+    return an array of Card pointers for those Cards whose _issuer matches the second parameter
 */
 
-int CountEmployeeWithGivenDepartment(Employee* arr1[SIZE], Department dept);
+void MatchingIssuerCards(Card* arr[SIZE], Issuer value, Card* res[SIZE]);
 
 /*
-    Find the average _budget for all projects
+    return cvv of the card with highest _annual_charge
 */
-
-float AverageBudget(Employee* arr1[SIZE]);
+int HighestChargeCard(Card* arr[SIZE]);
 
 /*
-    A function to deallocate the heap reservation made throughout the program
+    return pointer to function whose number is passed
 */
 
-void FreeMemory(Employee* arr1[SIZE]);
-
+Card* PointerToMatchingNumberCard(Card* arr[SIZE], int number);
 
 #endif // FUNCTIONALITIES_H
